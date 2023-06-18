@@ -9,9 +9,9 @@ namespace LibChip8.Instructions
     // 00EE 
     internal struct RET : IInstruction
     {
-        public short Mask => 0x00EE;
+        public ushort Mask => 0x00EE;
 
-        public void Execute(CPU cpu, short instr)
+        public void Execute(CPU cpu, ushort instr)
         {
             if (cpu.Regs.SP == 0)
                 throw new Exception("RET encountered while SP is already zero!");

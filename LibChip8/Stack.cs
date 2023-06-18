@@ -8,6 +8,6 @@ namespace LibChip8
 {
     internal struct Stack
     {
-        public short ReturnAddress {  get; set; }
+        public ushort ReturnAddress {  get; set; }
     }
 }

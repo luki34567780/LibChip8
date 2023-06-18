@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
-    internal struct JMP : IInstruction
+    internal struct LDReg : IInstruction
     {
-        public ushort Mask => 0x1000;
+        public ushort Mask => 0x8000;
 
         public void Execute(CPU cpu, ushort instr)
         {
-            var targetAddress = (short)(instr & 0x0FFF);
-            cpu.Regs.PC = targetAddress;
+            byte x = (byte)((instr & 0x0F00) >> 8);
+            byte y = (byte)((instr & 0x00F0) >> 4);
+
+            cpu.Regs.V[x] = cpu.Regs.V[y];
         }
     }
 }

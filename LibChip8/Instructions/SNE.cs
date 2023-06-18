@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
-    internal struct SE_Vx_Byte : IInstruction
+    internal struct SNE : IInstruction
     {
-        public short Mask => 0x3000;
+        public ushort Mask => 0x4000;
 
-        public void Execute(CPU cpu, short instr)
+        public void Execute(CPU cpu, ushort instr)
         {
             byte registerIndex = (byte)((instr & 0x0F00) >> 8);
             byte value = (byte)(instr & 0x00FF);
 
-            if (cpu.Regs.GetRegByNum(registerIndex) == value)
+            if (cpu.Regs.V[registerIndex] != value)
             {
                 // Skip the next instruction
                 cpu.Regs.PC += 2;

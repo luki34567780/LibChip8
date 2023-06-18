@@ -10,9 +10,9 @@ namespace LibChip8
     {
         public System.Timers.Timer Timer { get; set; }
         // wait timer
-        public short WT { get; set; }
+        public ushort WT { get; set; }
         // sound timer
-        public short ST { get; set; }
+        public ushort ST { get; set; }
 
         public Timers()
         {

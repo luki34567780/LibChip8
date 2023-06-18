@@ -9,9 +9,9 @@ namespace LibChip8.Instructions
     // 00E0
     internal class CLS : IInstruction
     {
-        public short Mask => 0x00E0;
+        public ushort Mask => 0x00E0;
 
-        public void Execute(CPU cpu, short instr)
+        public void Execute(CPU cpu, ushort instr)
         {
             for (int i = 0; i < 64; i++)
             {

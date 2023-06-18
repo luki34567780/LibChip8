@@ -8,9 +8,9 @@ namespace LibChip8.Instructions
 {
     internal struct Call : IInstruction
     {
-        public short Mask => 0x2000;
+        public ushort Mask => 0x2000;
 
-        public void Execute(CPU cpu, short instr)
+        public void Execute(CPU cpu, ushort instr)
         {
             if (cpu.Regs.SP == 15)
                 throw new Exception("stack overflow!");
