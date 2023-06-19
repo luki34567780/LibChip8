@@ -15,7 +15,7 @@ namespace LibChip8.Instructions
             if (cpu.Regs.SP == 15)
                 throw new Exception("stack overflow!");
 
-            var addr = (short)(instr & 0x0FFF);
+            var addr = (ushort)(instr & 0x0FFF);
             cpu.Regs.SP++;
             cpu.Stack[cpu.Regs.SP].ReturnAddress = cpu.Regs.PC;
             cpu.Regs.PC = addr;

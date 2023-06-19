@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
-    internal struct SNE : IInstruction
+    internal struct SNEVal : IInstruction
     {
         public ushort Mask => 0x4000;
 
