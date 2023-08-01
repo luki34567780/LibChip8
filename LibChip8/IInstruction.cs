@@ -8,7 +8,7 @@ namespace LibChip8
 {
     internal interface IInstruction
     {
-        public ushort Mask { get; }
+        public bool IsInstruction(Instruction instr);
         public void Execute(CPU cpu, ushort instr);
     }
 }

@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
+    // 5xy0 - SE Vx, Vy
     internal struct SEReg : IInstruction
     {
-        public ushort Mask => 0x5000;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x5, -1, -1, 0x0);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

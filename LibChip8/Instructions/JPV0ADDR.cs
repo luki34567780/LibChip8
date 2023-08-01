@@ -8,11 +8,15 @@ namespace LibChip8.Instructions
 {
     internal struct JPV0ADDR : IInstruction
     {
-        public ushort Mask => 0xB000;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x8, -1, -1, -1);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {
-
+            var targetAddress = (ushort)((instr & 0x0FFF) + cpu.Regs.V0);
+            cpu.Regs.PC = targetAddress;
         }
     }
 }

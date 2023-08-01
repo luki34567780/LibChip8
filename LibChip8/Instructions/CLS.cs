@@ -9,7 +9,7 @@ namespace LibChip8.Instructions
     // 00E0
     internal class CLS : IInstruction
     {
-        public ushort Mask => 0x00E0;
+        public bool IsInstruction(Instruction instr) => instr.CompareValues(0x0, 0x0, 0xE, 0x0);
 
         public void Execute(CPU cpu, ushort instr)
         {

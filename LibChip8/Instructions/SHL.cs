@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
+    // 8xyE - SHL Vx {, Vy}
     internal struct SHL : IInstruction
     {
-        public ushort Mask => 0x800E;
+        public bool IsInstruction(Instruction instr)
+        {
+            instr.CompareValues(0x8, -1, -1, 0xE);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

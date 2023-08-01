@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
+    // 8xy3 - XOR Vx, Vy
     internal struct XORReg : IInstruction
     {
-        public ushort Mask => 0x8003;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x8, -1, -1, 0x3);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

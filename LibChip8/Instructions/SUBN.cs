@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
+    // 8xy7 - SUBN Vx, Vy
     internal struct SUBN : IInstruction
     {
-        public ushort Mask => 0x8007;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x8, -1, -1, 0x7);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

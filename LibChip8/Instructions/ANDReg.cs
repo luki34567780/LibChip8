@@ -8,7 +8,10 @@ namespace LibChip8.Instructions
 {
     internal struct ANDReg : IInstruction
     {
-        public ushort Mask => 0x8002;
+        public bool IsInstruction(Instruction instruction)
+        {
+            return instruction[0] == 0x8 && instruction[3] == 0x2;
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

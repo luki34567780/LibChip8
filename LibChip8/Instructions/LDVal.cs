@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
+    // 6xkk - LD Vx, byte
     internal struct LDVal : IInstruction
     {
-        public ushort Mask => 0x6000;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x6, -1, -1, -1);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

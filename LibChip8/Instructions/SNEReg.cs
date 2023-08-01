@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
+    // 9xy0 - SNE Vx, Vy
     internal struct SNEReg : IInstruction
     {
-        public ushort Mask => 0x9000;
+
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x9, -1, -1, 0x0);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

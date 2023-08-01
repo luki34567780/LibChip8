@@ -9,7 +9,10 @@ namespace LibChip8.Instructions
 {
     internal struct JMP : IInstruction
     {
-        public ushort Mask => 0x1000;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x1, -1, -1, -1);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

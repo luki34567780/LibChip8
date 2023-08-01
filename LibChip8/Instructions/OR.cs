@@ -8,7 +8,10 @@ namespace LibChip8.Instructions
 {
     internal struct OR : IInstruction
     {
-        public ushort Mask => 0x8001;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x8, -1, -1, 0x1);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

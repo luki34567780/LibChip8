@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
+    // 4xkk - SNE Vx, byte
     internal struct SNEVal : IInstruction
     {
-        public ushort Mask => 0x4000;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x4, -1, -1, -1);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {

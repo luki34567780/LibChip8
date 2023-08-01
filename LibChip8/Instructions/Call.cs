@@ -8,7 +8,10 @@ namespace LibChip8.Instructions
 {
     internal struct Call : IInstruction
     {
-        public ushort Mask => 0x2000;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr[0] == 2;
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {
