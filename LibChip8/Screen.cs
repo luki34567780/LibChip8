@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace LibChip8
 {
-    internal class Screen
+    public class Screen
     {
-        public byte[,] Pixels = new byte[64, 32];
+        public const int Width = 64;
+        public const int Height = 32;
+        public byte[,] Pixels = new byte[Width, Height];
     }
 }

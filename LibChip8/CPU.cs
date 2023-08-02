@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibChip8
 {
-    internal class CPU
+    public class CPU
     {
         public CPU()
         {
@@ -32,13 +32,27 @@ namespace LibChip8
             }.CopyTo(Memory.AsSpan());
         }
 
+        public InstructionDecoder Decoder { get; } = new();
+
         public Registers Regs { get; } = new();
         public Stack[] Stack { get; } = new Stack[16];
         public Screen Screen { get; } = new();
         public byte[] Memory { get; } = new byte[4096];
 
-        public void DoInstruction(short instr)
+        public void LoadImage(byte[] image)
         {
+            image.CopyTo(Memory.AsSpan(0x200));
+        }
+
+        public void RunTick()
+        {
+            var instructionBinary = (ushort)(Memory[Regs.PC] << 8 | Memory[Regs.PC + 1]);
+            var instructionImplementation = Decoder.DecodeInstruction(instructionBinary);
+            //Console.WriteLine($"Executing instruction {instructionImplementation.ToString().Split(".").Last()} (Hex {instructionBinary:X}, PC: {Regs.PC})");
+
+            Regs.PC += 2;
+
+            instructionImplementation.Execute(this, instructionBinary);
         }
     }
 }

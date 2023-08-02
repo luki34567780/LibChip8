@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace LibChip8
 {
-    internal class InstructionDecoder
+    public class InstructionDecoder
     {
         private List<IInstruction> _instructionInstances = new();
-
+        private Dictionary<IInstruction, int> CallCounts = new();
         public InstructionDecoder()
         {
             var types = typeof(InstructionDecoder).Assembly.GetTypes();
@@ -19,7 +19,9 @@ namespace LibChip8
             {
                 if (type.GetInterfaces().Contains(typeof(IInstruction)))
                 {
-                    _instructionInstances.Add((IInstruction)Activator.CreateInstance(type));
+                    var instance = (IInstruction)Activator.CreateInstance(type);
+                    _instructionInstances.Add(instance);
+                    RuntimeHelpers.PrepareMethod(type.GetMethod("Execute").MethodHandle);
                 }
             }
         }
@@ -31,12 +33,14 @@ namespace LibChip8
 
         public IInstruction DecodeInstruction(ushort instructionBytes)
         {
-            var instructionStruct = UnsafeCast<Instruction>(instructionBytes);
+            var instructionStruct = new Instruction(instructionBytes);
 
             foreach (var instructionInstance in _instructionInstances)
             {
                 if (instructionInstance.IsInstruction(instructionStruct))
                 {
+                    //Console.WriteLine($"Executing Instruction: {instructionInstance}");
+                    //CallCounts[instructionInstance]++;
                     return instructionInstance;
                 }
             }
