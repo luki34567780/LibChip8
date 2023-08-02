@@ -9,15 +9,18 @@ namespace LibChip8.Instructions
     // 00EE 
     internal struct RET : IInstruction
     {
-        public ushort Mask => 0x00EE;
+        public bool IsInstruction(Instruction instr)
+        {
+            return instr.CompareValues(0x0, 0x0, -1, -1);
+        }
 
         public void Execute(CPU cpu, ushort instr)
         {
             if (cpu.Regs.SP == 0)
                 throw new Exception("RET encountered while SP is already zero!");
 
-            cpu.Regs.PC = cpu.Stack[cpu.Regs.SP].ReturnAddress;
             cpu.Regs.SP--;
+            cpu.Regs.PC = cpu.Stack[cpu.Regs.SP].ReturnAddress;
         }
     }
 }

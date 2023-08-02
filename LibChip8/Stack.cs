@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibChip8
 {
-    internal struct Stack
+    public struct Stack
     {
         public ushort ReturnAddress {  get; set; }
     }

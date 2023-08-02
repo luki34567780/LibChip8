@@ -20,7 +20,7 @@
         public ushort VE { get => V[14]; set => V[14] = value; }
         public ushort VF { get => V[15]; set => V[15] = value; }
         public ushort I { get; set; }
-        public ushort PC { get; set; }
+        public ushort PC { get; set; } = 0x200;
         public byte SP { get; set; }
     }
 }

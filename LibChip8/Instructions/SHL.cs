@@ -11,7 +11,7 @@ namespace LibChip8.Instructions
     {
         public bool IsInstruction(Instruction instr)
         {
-            instr.CompareValues(0x8, -1, -1, 0xE);
+            return instr.CompareValues(0x8, -1, -1, 0xE);
         }
 
         public void Execute(CPU cpu, ushort instr)

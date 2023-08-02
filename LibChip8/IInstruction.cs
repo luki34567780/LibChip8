@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibChip8
 {
-    internal interface IInstruction
+    public interface IInstruction
     {
         public bool IsInstruction(Instruction instr);
         public void Execute(CPU cpu, ushort instr);

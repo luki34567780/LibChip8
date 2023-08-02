@@ -17,7 +17,13 @@ namespace LibChip8.Instructions
         public void Execute(CPU cpu, ushort instr)
         {
             var targetAddress = (ushort)(instr & 0x0FFF);
+
             cpu.Regs.PC = targetAddress;
+
+            // restart test rom
+            if (cpu.Regs.PC == 988)
+                cpu.Regs.PC = 0x200;
+
         }
     }
 }

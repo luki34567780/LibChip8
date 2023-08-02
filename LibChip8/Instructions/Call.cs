@@ -19,8 +19,8 @@ namespace LibChip8.Instructions
                 throw new Exception("stack overflow!");
 
             var addr = (ushort)(instr & 0x0FFF);
-            cpu.Regs.SP++;
             cpu.Stack[cpu.Regs.SP].ReturnAddress = cpu.Regs.PC;
+            cpu.Regs.SP++;
             cpu.Regs.PC = addr;
         }
     }
