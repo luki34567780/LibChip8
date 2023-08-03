@@ -6,20 +6,17 @@ using System.Threading.Tasks;
 
 namespace LibChip8.Instructions
 {
-    // 8xy0 - LD Vx, Vy
-    internal struct LDReg : IInstruction
+    internal class ADDI : IInstruction
     {
         public bool IsInstruction(Instruction instr)
         {
-            return instr.CompareValues(0x8, -1, -1, 0x0);
+            return instr.CompareValues(0xF, -1, 0x1, 0xE);
         }
 
         public void Execute(CPU cpu, ushort instr)
         {
-            byte x = (byte)((instr & 0x0F00) >> 8);
-            byte y = (byte)((instr & 0x00F0) >> 4);
-
-            cpu.Regs.V[x] = cpu.Regs.V[y];
+            var x = (instr & 0x0F00) >> 8;
+            cpu.Regs.I += cpu.Regs.V[x];
         }
     }
 }

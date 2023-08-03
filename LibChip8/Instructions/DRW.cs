@@ -30,16 +30,16 @@ namespace LibChip8.Instructions
                 for (int col = 0; col < 8; col++)
                 {
                     byte pixelColor = (byte)(sprite[row] & (1 << (7 - col))); // Fix the bit shift here
-                    byte screenColor = cpu.Screen.Pixels[(x + col) % Screen.Width, (y + row) % Screen.Height]; // Apply wrapping
+                    byte screenColor = cpu.Screen[(x + col) % Screen.Width, (y + row) % Screen.Height]; // Apply wrapping
                     byte newColor = (byte)(pixelColor != 0 ? 1 : 0);
 
                     changed = changed || (screenColor == 1 && newColor == 0);
 
-                    cpu.Screen.Pixels[(x + col) % Screen.Width, (y + row) % Screen.Height] = newColor; // Apply wrapping
+                    cpu.Screen[(x + col) % Screen.Width, (y + row) % Screen.Height] = newColor; // Apply wrapping
                 }
             }
 
-            cpu.Regs.VF = (ushort)(changed ? 1 : 0);
+            cpu.Regs.VF = (byte)(changed ? 1 : 0);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace LibChip8.Instructions
             {
                 for (int  j = 0; j < 32; j++)
                 {
-                    cpu.Screen.Pixels[i, j] = 0;
+                    cpu.Screen[i, j] = 0;
                 }
             }
         }

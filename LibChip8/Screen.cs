@@ -10,6 +10,12 @@ namespace LibChip8
     {
         public const int Width = 64;
         public const int Height = 32;
-        public byte[,] Pixels = new byte[Width, Height];
+
+        public byte this[int x, int y]
+        {
+            get => Pixels[x * Height + y];
+            set => Pixels[x * Height + y] = value;
+        }
+        public byte[] Pixels = new byte[Width * Height];
     }
 }
