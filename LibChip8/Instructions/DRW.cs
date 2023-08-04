@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LibChip8.Instructions
 {
     internal class DRW : IInstruction
     {
+        private const byte OnValue = 255;
+        private const byte OffValue = 0;
         public bool IsInstruction(Instruction instr)
         {
             return instr.CompareValues(0xD, -1, -1, -1);
@@ -17,29 +20,36 @@ namespace LibChip8.Instructions
         {
             Span<byte> sprite = stackalloc byte[15];
 
-            var x = cpu.Regs.V[(instr & 0x0F00) >> 8];
-            var y = cpu.Regs.V[(instr & 0x00F0) >> 4];
+            var startX = cpu.Regs.V[(instr & 0x0F00) >> 8];
+            var startY = cpu.Regs.V[(instr & 0x00F0) >> 4];
             var height = instr & 0x000F;
 
-            cpu.Memory.AsSpan(cpu.Regs.I, height).CopyTo(sprite);
-
-            bool changed = false;
-
-            for (int row = 0; row < height; row++)
+            for (var i = 0; i < height; i++)
             {
-                for (int col = 0; col < 8; col++)
+                var spriteLine = cpu.Memory[cpu.Regs.I + i]; // A line of the sprite to render
+
+                for (var bit = 0; bit < 8; bit++)
                 {
-                    byte pixelColor = (byte)(sprite[row] & (1 << (7 - col))); // Fix the bit shift here
-                    byte screenColor = cpu.Screen[(x + col) % Screen.Width, (y + row) % Screen.Height]; // Apply wrapping
-                    byte newColor = (byte)(pixelColor != 0 ? 1 : 0);
+                    var x = (startX + bit) % Screen.Width;
+                    var y = (startY + i) % Screen.Height;
 
-                    changed = changed || (screenColor == 1 && newColor == 0);
+                    var spriteBit = ((spriteLine >> (7 - bit)) & 1);
+                    var oldBit = cpu.Screen[x, y];
+                    
 
-                    cpu.Screen[(x + col) % Screen.Width, (y + row) % Screen.Height] = newColor; // Apply wrapping
+                    // New bit is XOR of existing and new.
+                    var newBit = oldBit ^ spriteBit;
+
+                    if (newBit != 0)
+                        cpu.Screen[x, y] = OnValue;
+                    else // Otherwise write a pending clear
+                        newBit = OffValue;
+
+                    // If we wiped out a pixel, set flag for collission.
+                    if (oldBit != 0 && newBit == 0)
+                        cpu.Regs.V[0xF] = 1;
                 }
             }
-
-            cpu.Regs.VF = (byte)(changed ? 1 : 0);
         }
     }
 }

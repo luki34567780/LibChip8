@@ -20,16 +20,16 @@
                 <TextBlock Text="Tick" />
             </Button>
         </StackPanel>
-        <UniformGrid Grid.Column="1"  Rows="64" Columns="32" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ItemsControl ItemsSource="{Binding Data}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="Red" BorderThickness="2" MinHeight="10" MinWidth="10">
-                            <TextBlock Background="{Binding Color}" />
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </UniformGrid>
+        <Image 
+            Grid.Column="1" 
+            Source="{Binding Bitmap}" 
+            Stretch="Fill">
+            <Image.LayoutTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="90" />
+                    <ScaleTransform ScaleX="-1" />
+                </TransformGroup>
+            </Image.LayoutTransform>
+        </Image>
     </Grid>
 </Window>
