@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -39,24 +38,9 @@ namespace Chip8.UI
         public MainViewModel()
         {
             CPU = new CPU();
-            CPU.LoadImage(File.ReadAllBytes("mandel8-chip8.ch8"));
+            CPU.LoadImage(File.ReadAllBytes("logo.ch8"));
             Bitmap = new WriteableBitmap(Height, Width, 96, 96, PixelFormats.Gray8, BitmapPalettes.Gray256);
 
-        }
-
-        [RelayCommand]
-        public async Task MultiTick()
-        {
-            int c = 0;
-            while (true)
-            {
-                CPU.RunTick();
-
-                if (CPU.LastInstruction.GetType() == typeof(LibChip8.Instructions.DRW))
-                    break;
-
-                c++;
-            }
         }
 
         [RelayCommand]
@@ -64,26 +48,23 @@ namespace Chip8.UI
         {
             CPU.RunTick();
 
-            if (CPU.LastInstruction.GetType() == typeof(LibChip8.Instructions.DRW))
+            Bitmap.Lock();
+            Bitmap.WritePixels(new Int32Rect(0, 0, Height, Width), CPU.Screen.Pixels, Height, 0);
+            Bitmap.Unlock();
+
+            OnPropertyChanged(nameof(Bitmap));
+
+            var bm = new Bitmap(64, 32);
+
+            for (int i = 0; i < 64; i++)
             {
-                Bitmap.Lock();
-                Bitmap.WritePixels(new Int32Rect(0, 0, Height, Width), CPU.Screen.Pixels, Height, 0);
-                Bitmap.Unlock();
-
-                OnPropertyChanged(nameof(Bitmap));
-
-                var bm = new Bitmap(64, 32);
-
-                for (int i = 0; i < 64; i++)
+                for (int j = 0; j < 32; j++)
                 {
-                    for (int j = 0; j < 32; j++)
-                    {
-                        bm.SetPixel(i, j, CPU.Screen[i, j] == 0 ? System.Drawing.Color.Black : System.Drawing.Color.Wheat);
-                    }
+                    bm.SetPixel(i, j, CPU.Screen[i, j] == 0 ? System.Drawing.Color.Black : System.Drawing.Color.Wheat);
                 }
-
-                bm.Save("output.png");
             }
+
+            bm.Save("output.png");
         }
     }
 }

@@ -8,7 +8,6 @@ namespace LibChip8
 {
     public class CPU
     {
-        public IInstruction LastInstruction { get; private set; }
         public CPU()
         {
             // initialize memory at 0x000 to 0x1FF with the fontset
@@ -52,8 +51,6 @@ namespace LibChip8
             //Console.WriteLine($"Executing instruction {instructionImplementation.ToString().Split(".").Last()} (Hex {instructionBinary:X}, PC: {Regs.PC})");
 
             Regs.PC += 2;
-            
-            LastInstruction = instructionImplementation;
 
             instructionImplementation.Execute(this, instructionBinary);
         }

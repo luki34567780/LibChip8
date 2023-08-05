@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LibChip8\LibChip8.csproj" />
+    <ProjectReference Include="..\LibChip32\LibChip32.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,9 +24,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="logo.ch8">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="mandel8-chip8.ch8">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="test_opcode.ch8">

@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LibChip8.Instructions
 {
-    public class DRW : IInstruction
+    internal class DRW : IInstruction
     {
         private const byte OnValue = 255;
         private const byte OffValue = 0;
