@@ -128,11 +128,11 @@ Sets the `PC` to the Value of `Vx`.
 
 Pushes the current PC to the stack and sets the `PC` to the Value of `Vx`.  
 <br><br>
-0103 00x y - **SE Vx, Vy**  
+0103 00xy - **SE Vx, Vy**  
 
 Skips the next instruction if `Vx` equals `Vy`.  
 <br><br>
-0104 00x y - **SNE Vx, Vy**
+0104 00xy - **SNE Vx, Vy**
 
 Skips the next instruction if `Vx` doesn't equal `Vy`.  
 <br><br>
@@ -247,5 +247,24 @@ Shows the current Text
 <br><br>
 0703 000x - **GETPC**
 
-Stores the value of `PC` into `Vx`
+Stores the value of `PC` into `Vx`  
+<br><br>
+0800 000x - **PUSH Vx**
 
+Pushes the Register `Vx` onto the stack.  
+<br><br>
+`0801 000x - **POP Vx**
+
+Pops the stack and stores the value in `Vx`.  
+<br><br>
+0802 0000 **PUSHA**
+
+Pushes Registers `V0` to `VF` onto the stack
+0803 0000 **POPA**
+
+Pops the stack and stores the values in `V0` to `VF`.  
+<br><br>
+0803 000x **GETSB Vx**
+
+Stores the value of the Stackpointer (`SP`) into `Vx`.  
+<br><br>
