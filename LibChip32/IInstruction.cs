@@ -9,6 +9,6 @@ namespace LibChip8
     public interface IInstruction
     {
         public bool IsInstruction(Instruction instr);
-        public void Execute(CPU cpu, ushort instr);
+        public void Execute(CPU cpu, ulong instr);
     }
 }
