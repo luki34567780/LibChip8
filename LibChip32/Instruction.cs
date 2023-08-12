@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LibChip8
 {
+    [StructLayout(LayoutKind.Explicit, Pack = 1)]   
     public readonly struct Instruction
     {
         /// <summary>
@@ -39,7 +41,14 @@ namespace LibChip8
             return true;
         }
 
+        [FieldOffset(0)]
         private readonly ulong _raw;
+
+        [FieldOffset(0)]
+        public readonly byte InstructionClassByte;
+
+        [FieldOffset(1)]
+        public readonly byte InstructionIdentByte;
 
         public ulong Raw => _raw;
 

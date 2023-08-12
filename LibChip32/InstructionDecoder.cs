@@ -10,7 +10,6 @@ namespace LibChip8
     public class InstructionDecoder
     {
         private List<IInstruction> _instructionInstances = new();
-        private Dictionary<IInstruction, int> CallCounts = new();
         public InstructionDecoder()
         {
             var types = typeof(InstructionDecoder).Assembly.GetTypes();
@@ -28,15 +27,15 @@ namespace LibChip8
 
         public IInstruction DecodeInstruction(ulong instructionBytes)
         {
-            var instructionStruct = new Instruction(instructionBytes);
+            var instr = new Instruction(instructionBytes);
 
-            foreach (var instructionInstance in _instructionInstances)
+            foreach (var instruction in _instructionInstances)
             {
-                if (instructionInstance.IsInstruction(instructionStruct))
+                if (instruction.InstructionClassByte == instr.InstructionClassByte &&
+                    instruction.InstructionIdentByte == instr.InstructionIdentByte)
                 {
-                    //Console.WriteLine($"Executing Instruction: {instructionInstance}");
-                    //CallCounts[instructionInstance]++;
-                    return instructionInstance;
+                    Console.WriteLine($"Executing Instruction: {instruction}");
+                    return instruction;
                 }
             }
 

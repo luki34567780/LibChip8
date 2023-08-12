@@ -8,7 +8,8 @@ namespace LibChip8
 {
     public interface IInstruction
     {
-        public bool IsInstruction(Instruction instr);
+        public byte InstructionClassByte { get; }
+        public byte InstructionIdentByte { get; }
         public void Execute(CPU cpu, ulong instr);
     }
 }

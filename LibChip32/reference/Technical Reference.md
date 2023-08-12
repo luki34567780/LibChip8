@@ -105,14 +105,14 @@ shortcuts:
 
 ### 2.1 Instructions
 
-0000 0001 - **NOP** 
+0001 0000 - **NOP** 
 
 It does nothing but takes a cycle.  
 **Watch out, that the last bit is a 1, not a 0**  
 This is so you notice if when the Chip is executing empty memory.  
 
 <br><br>
-0001 0000 - **CLS**
+0002 0000 - **CLS**
 
 Clears the screen.  
 <br><br>
@@ -226,6 +226,7 @@ Generates a random number between 0 and 255 and stores it in `Vx`.
 
 Draws the pixel specified in `Vz` at the position specified in `Vx` and `Vy`.
 The pixel must be a 24 bit RGB value.  
+
 <br><br>
 0601 000x - **FILLRECT Vx**
 
@@ -237,7 +238,8 @@ Sets the screenmode to the value of `Vx`.
 
 Valid values:
  - 0: Text mode
- - 1: Image Mode  
+ - 1: Image Mode
+
 <br><br>
 0603 0000 - **SHOW**
 
