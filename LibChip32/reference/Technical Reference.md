@@ -68,7 +68,7 @@ It can only be accessed using a special instruction (see 2.1 Instructions)
 There are currently 2 Screen modes:
  - Text mode:
 	- Mapped in Memory (see 1.1 Memory)
-	- Ascii, 1 byte per character
+	- ASCII, 1 byte per character
 	- 25 lines, 80 characters per line
 - Image mode:
 	- Can be drawn to using Instructions (see 2.1 Instructions)
@@ -108,13 +108,15 @@ shortcuts:
 0001 0000 - **NOP** 
 
 It does nothing but takes a cycle.  
-**Watch out, that the last bit is a 1, not a 0**  
+**Watch out, the last bit of the Opcode is a 1, not a 0**  
 This is so you notice if when the Chip is executing empty memory.  
 
 <br><br>
 0002 0000 - **CLS**
 
 Clears the screen.  
+This instruction  does only do anything
+when the `Display Mode` is set to `Image mode`   
 <br><br>
 0100 0000 - **RET**
 
