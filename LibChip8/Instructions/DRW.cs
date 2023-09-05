@@ -43,7 +43,7 @@ namespace LibChip8.Instructions
                     if (newBit != 0)
                         cpu.Screen[x, y] = OnValue;
                     else // Otherwise write a pending clear
-                        newBit = OffValue;
+                        cpu.Screen[x, y] = OffValue;
 
                     // If we wiped out a pixel, set flag for collission.
                     if (oldBit != 0 && newBit == 0)

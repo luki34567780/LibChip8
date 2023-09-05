@@ -23,6 +23,8 @@ namespace Chip8.UI
         public MainWindow()
         {
             InitializeComponent();
+            KeyDown += ((MainViewModel)DataContext).KeyChanged;
+            KeyUp += ((MainViewModel)DataContext).KeyChanged;
         }
     }
 }

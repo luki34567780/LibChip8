@@ -19,8 +19,11 @@ namespace LibChip8.Instructions
             var x = (byte)((instr & 0x0F00) >> 8);
             var y = (byte)((instr & 0x00F0) >> 4);
 
-            cpu.Regs.VF = (byte)(cpu.Regs.V[y] > cpu.Regs.V[x] ? 1 : 0);
-            cpu.Regs.V[x] = (byte)(cpu.Regs.V[y] - cpu.Regs.V[x]);
+            var res = (byte)(cpu.Regs.V[y] - cpu.Regs.V[x]);
+            var borrowValue = (byte)(cpu.Regs.V[y] > cpu.Regs.V[x] ? 1 : 0);
+
+            cpu.Regs.V[x] = res;
+            cpu.Regs.VF = borrowValue;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace LibChip8.Instructions
             var y = (byte)((instr & 0x00F0) >> 4);
 
             cpu.Regs.V[x] ^= cpu.Regs.V[y];
+            cpu.Regs.VF = 0;
         }
     }
 }

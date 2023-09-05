@@ -17,9 +17,23 @@ namespace LibChip8.Instructions
         {
             var x = (instr & 0x0F00) >> 8;
 
-            for (int i = 0; i <= x; i++)
+            if (cpu.QuirkConfig.LoadStoreBehaviour == LoadStoreBehaviour.Increment)
             {
-                cpu.Regs.V[i] = cpu.Memory[cpu.Regs.I + i];
+                for (int i = 0; i <= x; i++)
+                {
+                    cpu.Regs.V[i] = cpu.Memory[cpu.Regs.I++];
+                }
+            }
+            else if (cpu.QuirkConfig.LoadStoreBehaviour == LoadStoreBehaviour.NoIncrement)
+            {
+                for (int i = 0; i <= x; i++)
+                {
+                    cpu.Regs.V[i] = cpu.Memory[cpu.Regs.I + i];
+                }
+            }
+            else
+            {
+                throw new Exception("Not implemented LoadStoreBehaviour!");
             }
         }
     }

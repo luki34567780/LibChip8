@@ -10,20 +10,18 @@ namespace SimpleChip8
 
         // https://stackoverflow.com/questions/28431077/fast-display-of-system-drawing-image-in-wpf-image
         // analyse um nicht auf mehreren schnell hintereinander folgenden drawcalls mehrmals zu drawn
-        // jit?
-        // use WriteableBitmap?
         static void Main(string[] args)
         {
             int counter = 0;
             var cpu = new LibChip8.CPU();
-            cpu.LoadImage(File.ReadAllBytes("3-corax+.ch8"));
+            cpu.LoadImage(File.ReadAllBytes("logo.ch8"));
 
             var sw = new Stopwatch();
             sw.Start();
 
             try
             {
-                while (true)
+                for (int i = 0; i < 1000; i++)
                 {
                     cpu.RunTick();
                     if (counter++ > 1000)

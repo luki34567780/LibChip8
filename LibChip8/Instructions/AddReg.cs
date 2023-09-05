@@ -8,6 +8,7 @@ namespace LibChip8.Instructions
 {
     internal struct AddReg : IInstruction
     {
+        // 8xy4 - ADD Vx, Vy
         public bool IsInstruction(Instruction instruction) => instruction[0] == 8 && instruction[3] == 4;
 
         public void Execute(CPU cpu, ushort instr)
@@ -16,8 +17,8 @@ namespace LibChip8.Instructions
             var y = (byte)((instr & 0x00F0) >> 4);
 
             var sum = cpu.Regs.V[x] + cpu.Regs.V[y];
-            cpu.Regs.VF = (byte)(sum > 0xFF ? 1 : 0);
             cpu.Regs.V[x] = (byte)(sum & 0xFF);
+            cpu.Regs.VF = (byte)(sum > 0xFF ? 1 : 0);
         }
     }
 }

@@ -18,8 +18,23 @@ namespace LibChip8.Instructions
         {
             var x = (byte)((instr & 0x0F00) >> 8);
 
-            cpu.Regs.VF = (byte)(cpu.Regs.V[x] & 0x01);
-            cpu.Regs.V[x] >>= 1;
+            byte val;
+            if (cpu.QuirkConfig.ShiftBehaviour == ShiftBehaviour.VxVy)
+            {
+                var y = (byte)((instr & 0x00F0) >> 4);
+                val = cpu.Regs.V[y];
+            }
+            else if (cpu.QuirkConfig.ShiftBehaviour == ShiftBehaviour.Vx)
+            {
+                val = cpu.Regs.V[x];
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid shift behaviour");
+            }
+
+            cpu.Regs.V[x] = (byte)(val >> 1);
+            cpu.Regs.VF = (byte)(val & 0x01);
         }
     }
 }

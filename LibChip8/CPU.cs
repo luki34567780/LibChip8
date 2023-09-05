@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using LibChip8.Instructions;
 
 namespace LibChip8
 {
     public class CPU
     {
+        public const int FontSetStartAddress = 0x0;
         public IInstruction LastInstruction { get; private set; }
         public CPU()
         {
@@ -31,13 +35,17 @@ namespace LibChip8
                 0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
                 0xF0, 0x80, 0xF0, 0x80, 0x80, // F
             }.CopyTo(Memory.AsSpan());
+
+            Decoder = new InstructionDecoder(this);
         }
 
-        public InstructionDecoder Decoder { get; } = new();
-
+        public QuirkConfig QuirkConfig = new ();
+        public InstructionDecoder Decoder { get; }
+        public Timers Timers { get; } = new();
         public Registers Regs { get; } = new();
         public Stack[] Stack { get; } = new Stack[16];
         public Screen Screen { get; } = new();
+        public Keyboard Keyboard { get; } = new();
         public byte[] Memory { get; } = new byte[4096];
 
         public void LoadImage(byte[] image)

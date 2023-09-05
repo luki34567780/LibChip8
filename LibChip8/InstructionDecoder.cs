@@ -11,7 +11,7 @@ namespace LibChip8
     {
         private List<IInstruction> _instructionInstances = new();
         private Dictionary<IInstruction, int> CallCounts = new();
-        public InstructionDecoder()
+        public InstructionDecoder(CPU cpu)
         {
             var types = typeof(InstructionDecoder).Assembly.GetTypes();
 
@@ -20,6 +20,7 @@ namespace LibChip8
                 if (type.GetInterfaces().Contains(typeof(IInstruction)))
                 {
                     var instance = (IInstruction)Activator.CreateInstance(type);
+                    instance.Init(cpu);
                     _instructionInstances.Add(instance);
                     RuntimeHelpers.PrepareMethod(type.GetMethod("Execute").MethodHandle);
                 }
