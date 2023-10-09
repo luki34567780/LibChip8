@@ -16,7 +16,22 @@ namespace LibChip8.Instructions
 
         public void Execute(CPU cpu, ushort instr)
         {
-            var targetAddress = (ushort)((instr & 0x0FFF) + cpu.Regs.V0);
+            cpu.Stack[cpu.Regs.SP++].ReturnAddress = cpu.Regs.PC;
+
+            ushort targetAddress;
+            if (cpu.QuirkConfig.JumpOffsetBehaviour == JumpOffsetBehaviour.NNNPlusV0)
+            {
+                targetAddress = (ushort)((instr & 0x0FFF) + cpu.Regs.V0);
+            }
+            else if (cpu.QuirkConfig.JumpOffsetBehaviour == JumpOffsetBehaviour.XNNPlusVx)
+            {
+                var x = (instr & 0x0F00) >> 8;
+                targetAddress = (ushort)((instr & 0x00FF) + cpu.Regs.V[x]);
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid jump offset behaviour");
+            }
             cpu.Regs.PC = targetAddress;
         }
     }

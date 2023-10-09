@@ -27,34 +27,41 @@ namespace Chip8.UI
     public partial class MainViewModel : ObservableObject
     {
         public const double HZ = 500;
-        public const double TIMER_EVENTS_PER_SECOND = 30;
+        public const double TIMER_EVENTS_PER_SECOND = 100;
         public const double TIME_BETWEEN_TICKS = 1000 / TIMER_EVENTS_PER_SECOND;
         public static int ITERATIONS_PER_TICK = (int)Math.Ceiling(HZ / TIMER_EVENTS_PER_SECOND);
 
-        public object CpuLock = new();
+        public readonly object CpuLock = new();
 
         public const int Height = 32;
         public const int Width = 64;
         public Dispatcher UIDispatcher { get; set; }
         public CPU CPU { get; private set; }
 
-        private WriteableBitmap _bitmap;
-        private System.Timers.Timer _timer;
+        private readonly WriteableBitmap _bitmap;
+        private readonly System.Timers.Timer _timer;
+        private readonly Queue<byte> _pendingKeyClearQueue = new();
 
         public WriteableBitmap Bitmap
         {
             get => _bitmap;
-            set
-            {
-                SetProperty(ref _bitmap, value);
-            }
-
+            init => SetProperty(ref _bitmap, value);
         }
 
         public void KeyChanged(object sender, KeyEventArgs e)
         {
+            Debugger.Log(0, "", $"Processing Key. Key: {e.Key}, IsDown: {e.IsDown}");
             var val = KeyToByte(e.Key);
-            CPU.Keyboard.SetKey(val, e.IsDown);
+
+            if (e.IsDown)
+                CPU.Keyboard.SetKey(val, true);
+            else
+            {
+                lock (CpuLock)
+                {
+                    _pendingKeyClearQueue.Enqueue(val);
+                }
+            }
         }
 
         public byte KeyToByte(Key key)
@@ -102,7 +109,7 @@ namespace Chip8.UI
         {
             UIDispatcher = Dispatcher.CurrentDispatcher;
             CPU = new CPU();
-            CPU.LoadImage(File.ReadAllBytes("images/4-flags.ch8"));
+            CPU.LoadImage(File.ReadAllBytes("images/8ce 8ttorney Disk1 (by SysL)(2016).ch8"));
             Bitmap = new WriteableBitmap(Height, Width, 96, 96, PixelFormats.Gray8, null);
 
             _timer = new System.Timers.Timer(TIME_BETWEEN_TICKS);
@@ -112,8 +119,6 @@ namespace Chip8.UI
 
         private void TimerTick()
         {
-            Debugger.Log(0, "", $"Running {ITERATIONS_PER_TICK} ticks\n");
-
             if (Monitor.TryEnter(CpuLock, 1))
             {
                 try
@@ -122,13 +127,22 @@ namespace Chip8.UI
                     {
                         Tick();
                     }
+
+                    while (_pendingKeyClearQueue.TryDequeue(out var key))
+                    {
+                        CPU.Keyboard.SetKey(key, false);
+                    }
+
+                    foreach (var key in _pendingKeyClearQueue)
+                    {
+                        CPU.Keyboard.SetKey(key, false);
+                    }
                 }
                 finally
                 {
                     Monitor.Exit(CpuLock);
                 }
             }
-
 
         }
 

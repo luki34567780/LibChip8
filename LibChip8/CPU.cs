@@ -7,12 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using LibChip8.Instructions;
 
+using static System.Net.Mime.MediaTypeNames;
+
 namespace LibChip8
 {
     public class CPU
     {
         public const int FontSetStartAddress = 0x0;
         public IInstruction LastInstruction { get; private set; }
+        private byte[] _image;
         public CPU()
         {
             // initialize memory at 0x000 to 0x1FF with the fontset
@@ -50,7 +53,19 @@ namespace LibChip8
 
         public void LoadImage(byte[] image)
         {
+            _image = image.ToArray();
             image.CopyTo(Memory.AsSpan(0x200));
+        }
+
+        public void PushStackFrame(ushort address)
+        {
+            Stack[Regs.SP++].ReturnAddress = address;
+        }
+
+        public ushort PopStackFrame()
+        {
+            Regs.SP--;
+            return Stack[Regs.SP].ReturnAddress;
         }
 
         public void RunTick()

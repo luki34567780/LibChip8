@@ -1,12 +1,15 @@
 ﻿using LibChip8;
 
+
 namespace InvalidInstructionFinder
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            var decoder = new InstructionDecoder();
+            var decoder = new InstructionDecoder(null);
+
+            int counter = 0;
 
             for (ushort i = 0; i < ushort.MaxValue; i++)
             {
@@ -16,10 +19,11 @@ namespace InvalidInstructionFinder
                 }
                 catch
                 {
-                    System.Console.WriteLine($"Invalid Instruction: {i}");
-                    return;
+                    counter++;
                 }
             }
+
+            Console.WriteLine(counter);
         }
     }
 }

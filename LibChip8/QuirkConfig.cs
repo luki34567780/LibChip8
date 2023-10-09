@@ -9,7 +9,7 @@ public class QuirkConfig
 {
     public JumpOffsetBehaviour JumpOffsetBehaviour { get; set; } = JumpOffsetBehaviour.NNNPlusV0;
     public LoadStoreBehaviour LoadStoreBehaviour { get; set; } = LoadStoreBehaviour.Increment;
-    public ShiftBehaviour ShiftBehaviour { get; set; } = ShiftBehaviour.Vx;
+    public ShiftBehaviour ShiftBehaviour { get; set; } = ShiftBehaviour.VxVy;
 
 }
 

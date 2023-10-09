@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace LibChip8.Instructions;
 internal class LDVXK : IInstruction
 {
+    // Fx0A - LD Vx, K
     public bool IsInstruction(Instruction instr)
     {
         return instr.CompareValues(0xF, -1, 0x0, 0xA);
@@ -14,7 +15,8 @@ internal class LDVXK : IInstruction
 
     public void Init(CPU cpu)
     {
-        cpu.Keyboard.KeyPressed += (byte key) => pressedKey = key;
+        if (cpu != null)
+            cpu.Keyboard.KeyPressed += (byte key) => pressedKey = key;
     }
 
     public volatile byte pressedKey = 0xFF;
